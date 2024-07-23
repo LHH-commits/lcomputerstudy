@@ -22,6 +22,10 @@
 		text-decoration:none;
 		color:#000;
 		font-weight:700;
+		border:none;
+		cursor:pointer;
+		padding:10px;
+		display:inline-block;
 	}
 </style>
 
@@ -69,26 +73,14 @@
 			<td>회원 나이</td>
 			<td><%=u_age %></td>
 		</tr>
-<!-- 수정/삭제 버튼 추가 / 수정 버튼에 u_idx 값 넘기기 -->
-<style>
-	a {
-		text-decoration:none;
-		color:#000;
-		font-weight:700;
-		border:none;
-		cursor:pointer;
-		padding:10px;
-		display:inline-block;
-	}
-</style>
-	<tr style="height:50px;">
-		<td style="border:none;">
-			<a href="userEdit.jsp?u_idx=<%=u_idx%>" style="width:70%;font-weight:700;background-color:#818181;color:#fff;" >수정</a>
-		</td>
-		<td style="border:none;">
-			<a style="width:70%;font-weight:700;background-color:red;color:#fff;">삭제</a>
-		</td>
-	</tr>
+		<tr style="height:50px;">
+			<td style="border:none;">
+				<a href="userEdit.jsp?u_idx=<%=u_idx%>" style="width:70%;font-weight:700;background-color:#818181;color:#fff;" >수정</a>
+			</td>
+			<td style="border:none;">
+				<a href="userDelete.jsp?u_idx=<%=u_idx%>" style="width:70%;font-weight:700;background-color:red;color:#fff;">삭제</a>
+			</td>
+		</tr>
 	<% 
 		}
 	%>

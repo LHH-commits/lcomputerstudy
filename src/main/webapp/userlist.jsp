@@ -46,6 +46,9 @@
 			<td><a href="userDetail.jsp?u_idx=<%=u_idx %>"><%=u_idx %></a></td>
 			<td><%=u_id %></td>
 			<td><%=u_name %></td>
+			<td style="border:none;">
+				<a href="userDelete.jsp?u_idx=<%=u_idx %>" style="width:70%;font-weight:700;background-color:red;color:#fff;">삭제</a>
+			</td>
 	     <tr>
 		<%
 	        }
