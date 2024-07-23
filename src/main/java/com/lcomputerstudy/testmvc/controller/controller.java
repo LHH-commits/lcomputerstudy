@@ -37,6 +37,28 @@ public class controller extends HttpServlet {
 				view = "user/list";
 				request.setAttribute("list", list);
 				break;
+			case "/user-insert.do":
+				view = "user/insert";
+				break;
+			case "/user-insert-process.do":
+				User user = new User();
+				user.setU_id(request.getParameter("id"));
+				user.setU_pw(request.getParameter("password"));
+				user.setU_name(request.getParameter("name"));
+				user.setU_tel(request.getParameter("tel1") + "-" + request.getParameter("tel2") + "-" + request.getParameter("tel3"));
+				user.setU_age(request.getParameter("age"));
+				
+				userService = UserService.getInstance();
+				userService.insertUser(user);
+				
+				view = "user/insert-result";
+				break;
+			case "/user-detail.do":
+				userService = UserService.getInstance();
+				User detail = userService.detailUser(user);
+				view = "user/detail";
+				request.setAttribute("detail", detail);
+				break;
 		}
 		
 		RequestDispatcher rd = request.getRequestDispatcher(view+".jsp");

@@ -24,4 +24,12 @@ public class UserService {
 	public ArrayList<User> getUsers() {
 		return dao.getUsers();
 	}
+	
+	public void insertUser(User user) {
+		dao.insertUser(user);
+	}
+	
+	public void detailUser(User user) {
+		dao.detailUser(user);
+	}
 }
