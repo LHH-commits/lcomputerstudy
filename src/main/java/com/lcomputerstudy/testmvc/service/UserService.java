@@ -29,7 +29,21 @@ public class UserService {
 		dao.insertUser(user);
 	}
 	
+	public User detailUser(User user) {
+		dao.detailUser(user);
+		return user;
+	}
+	
+	public void deleteUser(User user) {
+		dao.deleteUser(user);
+	}
+	
+	public User editUser(User user) {
+		dao.editUser(user);
+		return user;
+	}
+	/*
 	public void detailUser(User user) {
 		dao.detailUser(user);
-	}
+	}*/
 }

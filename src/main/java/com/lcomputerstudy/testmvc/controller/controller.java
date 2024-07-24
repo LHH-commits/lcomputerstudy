@@ -55,10 +55,27 @@ public class controller extends HttpServlet {
 				break;
 			case "/user-detail.do":
 				userService = UserService.getInstance();
-				User detail = userService.detailUser(user);
+				User userDetail = new User();
+				userDetail.setU_idx(Integer.parseInt(request.getParameter("u_idx"))); //u_idx 파라미터 확인
+				userDetail = userService.detailUser(userDetail);
 				view = "user/detail";
-				request.setAttribute("detail", detail);
+				request.setAttribute("detail", userDetail);
 				break;
+			case "/user-delete.do":
+				userService = UserService.getInstance();
+				User userDelete = new User();
+				userDelete.setU_idx(Integer.parseInt(request.getParameter("u_idx")));
+				userService.deleteUser(userDelete);
+				view = "user/delete";
+				request.setAttribute("delete", userDelete);
+				break;
+			case "/user-edit.do":
+				userService = UserService.getInstance();
+				User userEdit = new User();
+				userEdit.setU_idx(Integer.parseInt(request.getParameter("u_idx")));
+				userService.editUser(userEdit);
+				view = "user/edit";
+				request.setAttribute("edit", userEdit);
 		}
 		
 		RequestDispatcher rd = request.getRequestDispatcher(view+".jsp");

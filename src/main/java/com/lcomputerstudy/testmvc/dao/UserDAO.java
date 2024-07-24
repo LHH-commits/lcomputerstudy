@@ -118,4 +118,63 @@ public class UserDAO {
 			}
 		}
 	}
+	
+	public void deleteUser(User user) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			conn = DBConnection.getConnection();
+			String query = "delete from user where u_idx=?";
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, user.getU_idx());
+			
+			pstmt.executeUpdate();
+			
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		} finally {
+			try {
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public User editUser(User user) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			conn = DBConnection.getConnection();
+			String query = "select * from user where u_idx=?";
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, user.getU_idx());
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				user.setU_idx(rs.getInt("u_idx"));
+				user.setU_id(rs.getString("u_id"));
+				user.setU_pw(rs.getString("u_pw"));
+				user.setU_name(rs.getString("u_name"));
+				user.setU_tel(rs.getString("u_tel"));
+				user.setU_age(rs.getString("u_age"));
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		} finally {
+			try {
+				if(rs != null) rs.close();
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return user;
+	}
 }

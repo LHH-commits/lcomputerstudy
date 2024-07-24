@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -33,23 +34,31 @@
 	<table>
 		<tr>
 			<td>회원 번호</td>
-			<td><%=u_idx %></td>
+			<td>${detail.u_idx}</td>
 		</tr>
 		<tr>
 			<td>회원 ID</td>
-			<td><%=u_id %></td>
+			<td>${detail.u_id}</td>
 		</tr>
 		<tr>
 			<td>회원 이름</td>
-			<td><%=u_name %></td>
+			<td>${detail.u_name}</td>
 		</tr>
 		<tr>
 			<td>회원 전화번호</td>
-			<td><%=u_tel %></td>
+			<td>${detail.u_tel}</td>
 		</tr>
 		<tr>
 			<td>회원 나이</td>
-			<td><%=u_age %></td>
+			<td>${detail.u_age}</td>
+		</tr>
+		<tr style="height:50px;">
+			<td style="border:none;">
+				<a href="/lcomputerstudy/user-edit.do?u_idx=${detail.u_idx }" style="width:70%;font-weight:700;background-color:dodgerblue;color:#fff;">수정</a>
+			</td>
+			<td style="border:none;">
+				<a href="/lcomputerstudy/user-delete.do?u_idx=${detail.u_idx }" style="width:70%;font-weight:700;background-color:red;color:#fff;">삭제</a>
+			</td>
 		</tr>
 	</table>
 </body>

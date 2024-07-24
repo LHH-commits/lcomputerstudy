@@ -35,7 +35,7 @@
 		</tr>
 		<c:forEach items="${list}" var="item">
 			<tr>
-				<td>${item.u_idx}</td>
+				<td><a href="/lcomputerstudy/user-detail.do?u_idx=${item.u_idx}">${item.u_idx}</a></td>
 				<td>${item.u_id}</td>
 				<td>${item.u_name}</td>
 			</tr>
