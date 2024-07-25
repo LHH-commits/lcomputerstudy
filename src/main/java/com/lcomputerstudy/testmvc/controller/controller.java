@@ -16,19 +16,26 @@ public class controller extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doPost(request, response);
+		process(request, response);
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		process(request, response);
+	}
+	
+	
+	protected void process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		int usercount = 0;
 		response.setContentType("text/html; charset=utf-8");
+		request.setCharacterEncoding("utf-8");
 		
 		String requestURI = request.getRequestURI();
 		String contextPath = request.getContextPath();
 		String command = requestURI.substring(contextPath.length());
 		String view = null;
-		
-		response.setContentType("text/html; charset=utf-8");
-		request.setCharacterEncoding("utf-8");
+				
+		int uIdx = 0; 
+		User user = null;
 		
 		switch (command) {
 			case "/user-list.do":
@@ -41,7 +48,7 @@ public class controller extends HttpServlet {
 				view = "user/insert";
 				break;
 			case "/user-insert-process.do":
-				User user = new User();
+				user = new User();
 				user.setU_id(request.getParameter("id"));
 				user.setU_pw(request.getParameter("password"));
 				user.setU_name(request.getParameter("name"));
@@ -55,11 +62,14 @@ public class controller extends HttpServlet {
 				break;
 			case "/user-detail.do":
 				userService = UserService.getInstance();
-				User userDetail = new User();
-				userDetail.setU_idx(Integer.parseInt(request.getParameter("u_idx"))); //u_idx 파라미터 확인
-				userDetail = userService.detailUser(userDetail);
+				//User userDetail = new User();
+				//userDetail.setU_idx(Integer.parseInt(request.getParameter("u_idx"))); //u_idx 파라미터 확인
+				//userDetail = userService.detailUser(userDetail);
+				uIdx = Integer.parseInt(request.getParameter("u_idx"));
+				user = userService.detailUser(uIdx);
+				
 				view = "user/detail";
-				request.setAttribute("detail", userDetail);
+				request.setAttribute("detail", user);
 				break;
 			case "/user-delete.do":
 				userService = UserService.getInstance();
@@ -76,6 +86,23 @@ public class controller extends HttpServlet {
 				userService.editUser(userEdit);
 				view = "user/edit";
 				request.setAttribute("edit", userEdit);
+				break;
+			case "/user-update.do":
+				userService = UserService.getInstance();
+				User userUpdate = new User();
+				userUpdate.setU_idx(Integer.parseInt(request.getParameter("u_idx")));
+				userUpdate.setU_id(request.getParameter("edit_id"));
+				userUpdate.setU_pw(request.getParameter("edit_password"));
+				userUpdate.setU_name(request.getParameter("edit_name"));
+				userUpdate.setU_tel(request.getParameter("edit_tel1") + "-"
+									+ request.getParameter("edit_tel2") + "-"
+									+ request.getParameter("edit_tel3"));
+				userUpdate.setU_age(request.getParameter("edit_age"));
+				
+				userService.updateUser(userUpdate);
+				
+				view = "user/update";
+				break;
 		}
 		
 		RequestDispatcher rd = request.getRequestDispatcher(view+".jsp");

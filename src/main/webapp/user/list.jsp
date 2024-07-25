@@ -8,6 +8,13 @@
 <title>회원 목록2</title>
 </head>
 <style>
+	h1 {
+		text-align:center;
+	}
+	table {
+		border-collapse:collapse;
+		margin:40px auto;
+	}
 	table {
 		border-collapse:collapse;
 	}
@@ -28,6 +35,9 @@
 <body>
 <h1>회원 목록</h1>
 	<table>
+		<tr>
+			<td colspan="3">전체 회원 수 : ${usercount }</td>
+		</tr>
 		<tr>
 			<th>No</th>
 			<th>ID</th>

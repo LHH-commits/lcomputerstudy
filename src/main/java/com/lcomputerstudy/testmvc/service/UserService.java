@@ -23,15 +23,15 @@ public class UserService {
 	
 	public ArrayList<User> getUsers() {
 		return dao.getUsers();
+		
 	}
 	
 	public void insertUser(User user) {
 		dao.insertUser(user);
 	}
 	
-	public User detailUser(User user) {
-		dao.detailUser(user);
-		return user;
+	public User detailUser(int uIdx) {
+		return dao.detailUser(uIdx);
 	}
 	
 	public void deleteUser(User user) {
@@ -42,8 +42,12 @@ public class UserService {
 		dao.editUser(user);
 		return user;
 	}
-	/*
-	public void detailUser(User user) {
-		dao.detailUser(user);
-	}*/
+	
+	public void updateUser(User user) {
+		dao.updateUser(user);
+	}
+	
+	public int getUsersCount() {
+		return dao.getUsersCount();
+	}
 }
