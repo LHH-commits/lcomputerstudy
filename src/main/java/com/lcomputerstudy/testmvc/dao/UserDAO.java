@@ -220,7 +220,7 @@ public class UserDAO {
 		
 		try {
 			conn = DBConnection.getConnection();
-			String query = "select count(*) count from user";
+			String query = "SELECT COUNT(*) COUNT FROM user";
 			pstmt = conn.prepareStatement(query);
 			rs = pstmt.executeQuery();
 			

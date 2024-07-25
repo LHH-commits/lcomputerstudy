@@ -33,16 +33,19 @@ public class controller extends HttpServlet {
 		String contextPath = request.getContextPath();
 		String command = requestURI.substring(contextPath.length());
 		String view = null;
-				
+		
+		UserService userService = null;
 		int uIdx = 0; 
 		User user = null;
 		
 		switch (command) {
 			case "/user-list.do":
-				UserService userService = UserService.getInstance();
+				userService = UserService.getInstance();
 				ArrayList<User> list = userService.getUsers();
+				usercount = userService.getUsersCount();
 				view = "user/list";
 				request.setAttribute("list", list);
+				request.setAttribute("usercount", usercount);
 				break;
 			case "/user-insert.do":
 				view = "user/insert";
