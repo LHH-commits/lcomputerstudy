@@ -2,6 +2,7 @@ package com.lcomputerstudy.testmvc.service;
 
 import java.util.ArrayList;
 import com.lcomputerstudy.testmvc.dao.UserDAO;
+import com.lcomputerstudy.testmvc.vo.Pagination;
 import com.lcomputerstudy.testmvc.vo.User;
 
 public class UserService {
@@ -21,8 +22,8 @@ public class UserService {
 		return service;
 	}
 	
-	public ArrayList<User> getUsers() {
-		return dao.getUsers();
+	public ArrayList<User> getUsers(Pagination pagination) {
+		return dao.getUsers(pagination);
 		
 	}
 	

@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.lcomputerstudy.testmvc.service.UserService;
+import com.lcomputerstudy.testmvc.vo.Pagination;
 import com.lcomputerstudy.testmvc.vo.User;
 
 @WebServlet("*.do")
@@ -25,7 +26,7 @@ public class controller extends HttpServlet {
 	
 	
 	protected void process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		int usercount = 0;
+		
 		response.setContentType("text/html; charset=utf-8");
 		request.setCharacterEncoding("utf-8");
 		
@@ -37,15 +38,27 @@ public class controller extends HttpServlet {
 		UserService userService = null;
 		int uIdx = 0; 
 		User user = null;
+		int count = 0;
+		int page = 1;
 		
 		switch (command) {
 			case "/user-list.do":
+				String reqPage = request.getParameter("page");
+				if(reqPage != null) {
+					page = Integer.parseInt(reqPage);
+				}
 				userService = UserService.getInstance();
-				ArrayList<User> list = userService.getUsers();
-				usercount = userService.getUsersCount();
-				view = "user/list";
+				count = userService.getUsersCount();
+				Pagination pagination = new Pagination();
+				pagination.setPage(page);
+				pagination.setCount(count);
+				pagination.build();
+				ArrayList<User> list = userService.getUsers(pagination);
+				
 				request.setAttribute("list", list);
-				request.setAttribute("usercount", usercount);
+				request.setAttribute("pagination", pagination);
+				
+				view = "user/list";
 				break;
 			case "/user-insert.do":
 				view = "user/insert";

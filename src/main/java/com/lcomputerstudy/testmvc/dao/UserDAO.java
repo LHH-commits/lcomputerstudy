@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import com.lcomputerstudy.testmvc.database.DBConnection;
+import com.lcomputerstudy.testmvc.vo.Pagination;
 import com.lcomputerstudy.testmvc.vo.User;
 
 public class UserDAO {
@@ -23,21 +24,37 @@ public class UserDAO {
 		return dao;
 	}
 	
-	public ArrayList<User> getUsers() {
+	public ArrayList<User> getUsers(Pagination pagination) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		ArrayList<User> list = null;
+		int pageNum = pagination.getPageNum();
+		
 		
 		try {
 			conn = DBConnection.getConnection();
-			String query = "select * from user";
-			pstmt = conn.prepareStatement(query);
-			rs = pstmt.executeQuery();
 			list = new ArrayList<User>();
+			//String query = "select * from user limit ?,3";
+			
+			String query = new StringBuilder()
+					//.append("SET @ROWNUM := (SELECT COUNT(*) - ? + 1 FROM user);\n")
+					.append("SELECT	@ROWNUM := @ROWNUM -1 AS ROWNUM,\n")
+					.append("		ta.*\n")
+					.append("FROM	user ta\n")
+					.append("INNER JOIN	(SELECT @rownum := (SELECT COUNT(*)-?+1 FROM user ta)) tb ON 1=1\n")
+					.append("LIMIT	?, ?\n")
+					.toString();
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, pageNum);
+			pstmt.setInt(2, pageNum);
+			pstmt.setInt(3, Pagination.perPage);
+			rs = pstmt.executeQuery();
+			
 			
 			while(rs.next()) {
 				User user = new User();
+				user.setRownum(rs.getInt("ROWNUM"));
 				user.setU_idx(rs.getInt("u_idx"));
 				user.setU_id(rs.getString("u_id"));
 				user.setU_name(rs.getString("u_name"));
@@ -49,9 +66,9 @@ public class UserDAO {
 			e.printStackTrace();
 		} finally {
 			try {
-				rs.close();
-				pstmt.close();
-				conn.close();
+				if(rs != null) rs.close();
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}

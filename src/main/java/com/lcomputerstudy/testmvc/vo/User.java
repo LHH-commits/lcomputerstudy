@@ -2,6 +2,7 @@ package com.lcomputerstudy.testmvc.vo;
 
 public class User {
 
+	private int ROWNUM;
 	private int u_idx;
 	private String u_id;
 	private String u_pw;
@@ -44,5 +45,11 @@ public class User {
 	}
 	public void setU_age(String u_age) {
 		this.u_age = u_age;
+	}
+	public int getRownum() {
+		return ROWNUM;
+	}
+	public void setRownum(int ROWNUM) {
+		this.ROWNUM = ROWNUM;
 	}
 }
