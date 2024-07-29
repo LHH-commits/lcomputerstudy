@@ -8,6 +8,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import com.lcomputerstudy.testmvc.service.UserService;
 import com.lcomputerstudy.testmvc.vo.Pagination;
 import com.lcomputerstudy.testmvc.vo.User;
@@ -40,6 +42,10 @@ public class controller extends HttpServlet {
 		User user = null;
 		int count = 0;
 		int page = 1;
+		String pw = null;
+		String idx = null;
+		HttpSession session = null;
+		command = checkSession(request, response, command);
 		
 		switch (command) {
 			case "/user-list.do":
@@ -119,9 +125,58 @@ public class controller extends HttpServlet {
 				
 				view = "user/update";
 				break;
+			case "/user-login.do":
+				view = "user/login";
+				break;
+			case "/user-login-process.do":
+				idx = request.getParameter("login_id");
+				pw = request.getParameter("login_password");
+				
+				userService = UserService.getInstance();
+				user = userService.loginUser(idx,pw);
+				
+				if(user != null) {
+					session = request.getSession();
+					session.setAttribute("user", user);
+					
+					view = "user/login-result";
+				} else {
+					view = "user/login-fail";
+				}
+				break;
+			case "/logout.do":
+				session = request.getSession();
+				session.invalidate();
+				view = "user/login";
+				break;
+			case "/access-denied.do":
+				view = "user/access-denied";
+				break;
 		}
 		
 		RequestDispatcher rd = request.getRequestDispatcher(view+".jsp");
 		rd.forward(request, response);
+	}
+	String checkSession(HttpServletRequest request, HttpServletResponse response, String command) {
+		HttpSession session = request.getSession();
+		
+		String[] authList = {
+				"/user-list.do"
+				,"/user-insert.do"
+				,"/user-insert-process.do"
+				,"/user-detail.do"
+				,"/user-edit.do"
+				,"/user-edit-process.do"
+				,"/logout.do"
+			};
+		
+		for (String item : authList) {
+			if (item.equals(command)) {
+				if (session.getAttribute("user") == null) {
+					command = "/access-denied.do";
+				}
+			}
+		}
+		return command;
 	}
 }
