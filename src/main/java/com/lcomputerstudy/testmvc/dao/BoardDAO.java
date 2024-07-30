@@ -33,7 +33,9 @@ public class BoardDAO {
 		
 		try {
 			conn = DBConnection.getConnection();
-			String query = "SELECT b.b_idx, b.b_title, b.b_date FROM board b";
+			String query = "SELECT b.b_idx, b.b_title, b.b_date, u.u_name as b_writer "
+					+ "FROM board b"
+					+ "INNER JOIN user u ON b.b_writer = u.u_idx";
 			pstmt = conn.prepareStatement(query);
 			rs = pstmt.executeQuery();
 			list = new ArrayList<Board>();
@@ -45,7 +47,7 @@ public class BoardDAO {
 				board.setB_title(rs.getString("b_title"));
 				//board.setB_content(rs.getString("b_content"));
 				board.setB_date(rs.getString("b_date"));
-				//user.setU_name(rs.getString("u_name"));
+				board.setB_writer(rs.getString("b_writer"));
 				list.add(board);
 			}
 		} catch (Exception e) {

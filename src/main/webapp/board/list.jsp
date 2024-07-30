@@ -33,10 +33,10 @@
 			<th>제목</th>
 			<th>작성일</th>
 		</tr>
-		<c:forEach items="${b_list}" var="board">
+		<c:forEach items="${b_list}" var="board" varStatus="status">
 			<tr>
 				<td>${board.b_idx }</td>
-				<td>${board.b_title }</td>
+				<td><a href="/lcomputerstudy/board-detail.do?b_idx=${board.b_idx }">${board.b_title }</a></td>
 				<td>${board.b_date }</td>
 			</tr>
 		</c:forEach>

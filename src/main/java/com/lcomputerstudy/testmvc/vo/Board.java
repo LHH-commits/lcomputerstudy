@@ -6,7 +6,14 @@ public class Board {
 	private String b_title;
 	private String b_content;
 	private String b_date;
+	private String b_writer;
 	
+	public String getB_writer() {
+		return b_writer;
+	}
+	public void setB_writer(String b_writer) {
+		this.b_writer = b_writer;
+	}
 	public int getB_idx() {
 		return b_idx;
 	}

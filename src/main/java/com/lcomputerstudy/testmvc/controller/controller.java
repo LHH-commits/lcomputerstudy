@@ -42,6 +42,7 @@ public class controller extends HttpServlet {
 		BoardService boardService = null;
 		UserService userService = null;
 		int uIdx = 0; 
+		int bIdx = 0;
 		User user = null;
 		Board board = null;
 		int count = 0;
@@ -178,6 +179,12 @@ public class controller extends HttpServlet {
 				break;
 			case "/board-detail.do":
 				boardService = BoardService.getInstance();
+				bIdx = Integer.parseInt(request.getParameter("b_idx"));
+				board = boardService.detailBoard(bIdx);
+				
+				view = "board/detail";
+				request.setAttribute("detail", board);
+				break;
 		}
 		
 		RequestDispatcher rd = request.getRequestDispatcher(view+".jsp");
