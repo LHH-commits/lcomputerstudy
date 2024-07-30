@@ -10,9 +10,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.lcomputerstudy.testmvc.service.BoardService;
 import com.lcomputerstudy.testmvc.service.UserService;
 import com.lcomputerstudy.testmvc.vo.Pagination;
 import com.lcomputerstudy.testmvc.vo.User;
+import com.lcomputerstudy.testmvc.vo.Board;
 
 @WebServlet("*.do")
 public class controller extends HttpServlet {
@@ -37,9 +39,11 @@ public class controller extends HttpServlet {
 		String command = requestURI.substring(contextPath.length());
 		String view = null;
 		
+		BoardService boardService = null;
 		UserService userService = null;
 		int uIdx = 0; 
 		User user = null;
+		Board board = null;
 		int count = 0;
 		int page = 1;
 		String pw = null;
@@ -152,6 +156,28 @@ public class controller extends HttpServlet {
 			case "/access-denied.do":
 				view = "user/access-denied";
 				break;
+			
+			case "/board-list.do":
+				boardService = BoardService.getInstance();
+				ArrayList<Board> b_list = boardService.getBoards();
+				view = "board/list";
+				request.setAttribute("b_list", b_list);
+				break;
+			case "/board-insert.do":
+				view = "board/insert";
+				break;
+			case "/board-insert-process.do":
+				board = new Board();
+				board.setB_title(request.getParameter("title"));
+				board.setB_content(request.getParameter("content"));
+				
+				boardService = BoardService.getInstance();
+				boardService.insertBoard(board);
+				
+				view = "board/insert-result";
+				break;
+			case "/board-detail.do":
+				boardService = BoardService.getInstance();
 		}
 		
 		RequestDispatcher rd = request.getRequestDispatcher(view+".jsp");

@@ -6,7 +6,6 @@ public class Board {
 	private String b_title;
 	private String b_content;
 	private String b_date;
-	private String b_writter;
 	
 	public int getB_idx() {
 		return b_idx;
@@ -32,12 +31,5 @@ public class Board {
 	public void setB_date(String b_date) {
 		this.b_date = b_date;
 	}
-	public String getB_writter() {
-		return b_writter;
-	}
-	public void setB_writter(String b_writter) {
-		this.b_writter = b_writter;
-	}
-	
 	
 }
