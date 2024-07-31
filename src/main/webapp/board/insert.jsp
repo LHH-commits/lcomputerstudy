@@ -13,6 +13,8 @@
 		<input type="text" name="title" required><br>
 		<label for="content">내용</label>
 		<textarea name="content" required></textarea><br>
+		<label for="writer_idx">작성자idx</label>
+		<input type="number" name="writer_idx" required><br>
 		<input type="submit" value="게시물 등록">
 	</form>
 </body>

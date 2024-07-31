@@ -36,4 +36,16 @@ public class BoardService {
 	public Board detailBoard(int b_idx) {
 		return dao.detailBoard(b_idx);
 	}
+	
+	public void deleteBoard(Board board) {
+		dao.deleteBoard(board);
+	}
+	
+	public Board editBoard(Board board) {
+		return dao.editBoard(board);
+	}
+	
+	public void updateBoard(Board board) {
+		dao.updateBoard(board);
+	}
 }

@@ -171,6 +171,7 @@ public class controller extends HttpServlet {
 				board = new Board();
 				board.setB_title(request.getParameter("title"));
 				board.setB_content(request.getParameter("content"));
+				board.setU_idx(Integer.parseInt(request.getParameter("writer_idx")));
 				
 				boardService = BoardService.getInstance();
 				boardService.insertBoard(board);
@@ -184,6 +185,35 @@ public class controller extends HttpServlet {
 				
 				view = "board/detail";
 				request.setAttribute("detail", board);
+				break;
+			case "/board-delete.do":
+				boardService = BoardService.getInstance();
+				board = new Board();
+				board.setB_idx(Integer.parseInt(request.getParameter("b_idx")));
+				boardService.deleteBoard(board);
+				
+				view = "board/delete";
+				break;
+			case "/board-edit.do":
+				boardService = BoardService.getInstance();
+				board = new Board();
+				board.setB_idx(Integer.parseInt(request.getParameter("b_idx")));
+				boardService.editBoard(board);
+				
+				view = "board/edit";
+				request.setAttribute("edit", board);
+				break;
+			case "/board-update.do":
+				boardService = BoardService.getInstance();
+				board = new Board();
+				
+				board.setB_title(request.getParameter("b_title"));
+				board.setB_content(request.getParameter("b_content"));
+				board.setB_date(request.getParameter("b_date"));
+				
+				boardService.updateBoard(board);
+				
+				view = "board/update";
 				break;
 		}
 		
