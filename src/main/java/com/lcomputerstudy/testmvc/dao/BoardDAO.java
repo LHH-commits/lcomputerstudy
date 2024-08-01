@@ -25,7 +25,7 @@ public class BoardDAO {
 		return dao;
 	}
 	
-	public ArrayList<Board> getBoards() {
+	public ArrayList<Board> getBoards(Pagination pagination) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -35,8 +35,11 @@ public class BoardDAO {
 			conn = DBConnection.getConnection();
 			String query = "SELECT b.b_idx, b.b_title, b.b_date, u.u_name as b_writer, b.b_views "
 					+ "FROM board b "
-					+ "INNER JOIN user u ON b.u_idx = u.u_idx";
+					+ "INNER JOIN user u ON b.u_idx = u.u_idx "
+					+ "LIMIT ?, ?";
 			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, pagination.getPageNum());
+			pstmt.setInt(2, pagination.getPerPage());
 			rs = pstmt.executeQuery();
 			list = new ArrayList<Board>();
 			
@@ -64,7 +67,34 @@ public class BoardDAO {
 		return list;
 	}
 	
-	
+	public int getBoardCount() {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int count = 0;
+		
+		try {
+			conn = DBConnection.getConnection();
+			String query = "SELECT COUNT(*) COUNT FROM board";
+			pstmt = conn.prepareStatement(query);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				count = rs.getInt("count");
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(rs != null) rs.close();
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return count;
+	}
 	
 	public void insertBoard(Board board) {
 		Connection conn = null;

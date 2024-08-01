@@ -162,8 +162,19 @@ public class controller extends HttpServlet {
 				break;
 			
 			case "/board-list.do":
+				String reqPage1 = request.getParameter("page");
+				if(reqPage1 != null) {
+					page = Integer.parseInt(reqPage1);
+				} else {
+					page = 1; // 페이지 정보가 없을 경우 기본 페이지는 1
+				}
 				boardService = BoardService.getInstance();
-				ArrayList<Board> b_list = boardService.getBoards();
+				count = boardService.getBoardCount();
+				Pagination b_pagination = new Pagination();
+				b_pagination.setPage(page);
+				b_pagination.setCount(count);
+				b_pagination.build();
+				ArrayList<Board> b_list = boardService.getBoards(b_pagination);
 				view = "board/list";
 				request.setAttribute("b_list", b_list);
 				break;

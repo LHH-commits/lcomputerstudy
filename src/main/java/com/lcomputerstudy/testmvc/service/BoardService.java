@@ -25,8 +25,8 @@ public class BoardService {
 		return service;
 	}
 	
-	public ArrayList<Board> getBoards() {
-		return dao.getBoards();
+	public ArrayList<Board> getBoards(Pagination pagination) {
+		return dao.getBoards(pagination);
 	}
 	
 	public void insertBoard(Board board) {
@@ -51,5 +51,9 @@ public class BoardService {
 	
 	public void updateBoard(Board board) {
 		dao.updateBoard(board);
+	}
+	
+	public int getBoardCount() {
+		return dao.getBoardCount();
 	}
 }
