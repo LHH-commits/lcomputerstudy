@@ -12,6 +12,7 @@
     <c:choose>
         <c:when test="${not empty detail}">
             <p><strong>제목:</strong> ${detail.b_title}</p>
+            <p><strong>조회수:</strong> ${detail.b_views }</p>
             <p><strong>내용:</strong> ${detail.b_content}</p>
             <p><strong>작성 일시:</strong> ${detail.b_date}</p>
             <p><strong>작성자:</strong> ${detail.b_writer }</p>

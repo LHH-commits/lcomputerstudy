@@ -66,7 +66,7 @@
 	<div>
 		<ul>
 			<c:choose>
-				<c:when test="${pagination.prevPage ge 5 }">
+				<c:when test="${pagination.prevPage ge 1 }">
 					<li>
 						<a href="user-list.do?page=${pagination.prevPage }">
 							◀
@@ -89,13 +89,12 @@
 				</c:choose>
 			</c:forEach>
 			<c:choose>
-				<c:when test="${pagination.nextPage lt pagination.lastPage }">
+				<c:when test="${pagination.nextPage le pagination.lastPage }">
 					<li style="">
 						<a href="user-list.do?page=${pagination.nextPage }">▶</a>
 					</li>
 				</c:when>
 			</c:choose>
-			
 		</ul>
 	</div>
 </body>

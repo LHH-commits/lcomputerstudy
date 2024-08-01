@@ -8,7 +8,14 @@ public class Board {
 	private String b_date;
 	private String b_writer;
 	private int u_idx;
+	private int b_views;
 	
+	public int getB_views() {
+		return b_views;
+	}
+	public void setB_views(int b_views) {
+		this.b_views = b_views;
+	}
 	public int getU_idx() {
 		return u_idx;
 	}

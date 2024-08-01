@@ -37,6 +37,10 @@ public class BoardService {
 		return dao.detailBoard(b_idx);
 	}
 	
+	public void countViews(int b_idx) {
+		dao.countViews(b_idx);
+	}
+	
 	public void deleteBoard(Board board) {
 		dao.deleteBoard(board);
 	}

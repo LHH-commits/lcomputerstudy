@@ -33,6 +33,7 @@
 			<th>제목</th>
 			<th>작성일</th>
 			<th>작성자</th>
+			<th>조회수</th>
 		</tr>
 		<c:forEach items="${b_list}" var="board" varStatus="status">
 			<tr>
@@ -40,8 +41,10 @@
 				<td><a href="/lcomputerstudy/board-detail.do?b_idx=${board.b_idx }">${board.b_title }</a></td>
 				<td>${board.b_date }</td>
 				<td>${board.b_writer}</td>
+				<td>${board.b_views }</td>
 			</tr>
 		</c:forEach>
 	</table>
+	<a href="board-insert.do">새 글 작성</a>
 </body>
 </html>

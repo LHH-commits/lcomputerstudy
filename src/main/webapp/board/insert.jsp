@@ -17,5 +17,9 @@
 		<input type="number" name="writer_idx" required><br>
 		<input type="submit" value="게시물 등록">
 	</form>
+	<br>
+	<form action="board-list.do" method="get">
+		<button type="submit">목록으로</button>
+	</form>
 </body>
 </html>

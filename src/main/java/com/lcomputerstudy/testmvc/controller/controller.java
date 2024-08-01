@@ -57,13 +57,16 @@ public class controller extends HttpServlet {
 				String reqPage = request.getParameter("page");
 				if(reqPage != null) {
 					page = Integer.parseInt(reqPage);
+				} else {
+					page = 1; // 페이지 정보가 없을 경우 기본 페이지는 1
 				}
 				userService = UserService.getInstance();
-				count = userService.getUsersCount();
+				count = userService.getUsersCount(); // 총 사용자 수를 가져옴
 				Pagination pagination = new Pagination();
-				pagination.setPage(page);
-				pagination.setCount(count);
-				pagination.build();
+				pagination.setPage(page); // 현재 페이지 설정
+				pagination.setCount(count); // 총 사용자 수 설정
+				pagination.build(); // 페이지네이션 빌드
+				// 페이지네이션 정보를 기반으로 사용자 목록 가져옴
 				ArrayList<User> list = userService.getUsers(pagination);
 				
 				request.setAttribute("list", list);
@@ -181,6 +184,7 @@ public class controller extends HttpServlet {
 			case "/board-detail.do":
 				boardService = BoardService.getInstance();
 				bIdx = Integer.parseInt(request.getParameter("b_idx"));
+				boardService.countViews(bIdx);
 				board = boardService.detailBoard(bIdx);
 				
 				view = "board/detail";
@@ -201,15 +205,16 @@ public class controller extends HttpServlet {
 				boardService.editBoard(board);
 				
 				view = "board/edit";
-				request.setAttribute("edit", board);
+				request.setAttribute("b_edit", board);
 				break;
 			case "/board-update.do":
 				boardService = BoardService.getInstance();
 				board = new Board();
 				
-				board.setB_title(request.getParameter("b_title"));
-				board.setB_content(request.getParameter("b_content"));
-				board.setB_date(request.getParameter("b_date"));
+				board.setB_idx(Integer.parseInt(request.getParameter("b_idx")));
+				board.setB_title(request.getParameter("edit_title"));
+				board.setB_content(request.getParameter("edit_content"));
+				board.setU_idx(Integer.parseInt(request.getParameter("u_idx")));
 				
 				boardService.updateBoard(board);
 				
