@@ -177,6 +177,7 @@ public class controller extends HttpServlet {
 				ArrayList<Board> b_list = boardService.getBoards(b_pagination);
 				view = "board/list";
 				request.setAttribute("b_list", b_list);
+				request.setAttribute("b_pagination", b_pagination);
 				break;
 			case "/board-insert.do":
 				view = "board/insert";
@@ -246,6 +247,11 @@ public class controller extends HttpServlet {
 				,"/user-detail.do"
 				,"/user-edit.do"
 				,"/user-edit-process.do"
+				,"/board-list.do"
+				,"/board-insert.do"
+				,"/board-insert-process.do"
+				,"/board-detail.do"
+				,"/board-edit.do"
 				,"/logout.do"
 			};
 		

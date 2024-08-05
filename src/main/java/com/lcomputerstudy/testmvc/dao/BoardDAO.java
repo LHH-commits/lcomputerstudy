@@ -67,6 +67,65 @@ public class BoardDAO {
 		return list;
 	}
 	
+	public ArrayList<Board> getBoardsBySearch(Pagination pagination, String searchOption, String searchKeyword) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		ArrayList<Board> list = null;
+		
+		try {
+			conn = DBConnection.getConnection();
+			StringBuilder query = new StringBuilder("SELECT b.b_idx, b.b_title, b.b_date, u.u_name as b_writer, b.b_biews "
+					+ "FROM board b "
+					+ "INNER JOIN user u ON b.u_idx = u.u_idx "
+					+ "WHERE 1=1");
+			if ("b_title".equals(searchOption)) {
+				query.append(" AND b.b_title LIKE ?");
+			} else if ("b_title_content".equals(searchOption)) {
+				query.append(" AND b.b_title LIKE ? OR b.b_content LIKE ?");
+			} else if ("b_writer".equals(searchOption)) {
+				query.append(" AND u.u_name LIKE ?");
+			}
+			query.append(" LIMIT ?,?");
+			pstmt = conn.prepareStatement(query.toString());
+			
+			if ("b_title".equals(searchOption)) {
+				pstmt.setString(1, "%"+searchKeyword+"%");
+			} else if ("b_title_content".equals(searchOption)) {
+				pstmt.setString(1, "%"+searchKeyword+"%");
+				pstmt.setString(2, "%"+searchKeyword+"%");
+			} else if ("b_writer".equals(searchOption)) {
+				pstmt.setString(1, "%"+searchKeyword+"%");
+			}
+			pstmt.setInt(3, getBoardCount());
+			
+			rs = pstmt.executeQuery();
+			list = new ArrayList<Board>();
+			
+			while(rs.next()) {
+				Board board = new Board();
+				board.setB_idx(rs.getInt("b_idx"));
+				board.setB_title(rs.getString("b_title"));
+				board.setB_date(rs.getString("b_date"));
+				board.setB_writer(rs.getString("b_writer"));
+				board.setB_views(rs.getInt("b_views"));
+				list.add(board);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(rs != null) rs.close();
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return list;
+	}
+	
 	public int getBoardCount() {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -82,6 +141,58 @@ public class BoardDAO {
 			while(rs.next()) {
 				count = rs.getInt("count");
 			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(rs != null) rs.close();
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return count;
+	}
+	
+	public int getBoardCountBySearch(String searchOption, String searchKeyword) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int count = 0;
+		
+		try {
+			conn = DBConnection.getConnection();
+			StringBuilder query = new StringBuilder
+					("SELECT COUNT(*) "
+					+ "FROM board b "
+					+ "INNER JOIN user u ON b.u_idx=u.u_idx "
+					+ "WHERE 1=1");
+			if ("b_title".equals(searchOption)) {
+				query.append(" AND b.b_title LIKE ?");
+			} else if ("b_title_content".equals(searchOption)) {
+				query.append(" AND b.b_title LIKE ? OR b.b_content LIKE ?");
+			} else if ("b_writer".equals(searchOption)) {
+				query.append(" AND u.u_name LIKE ?");
+			}
+			
+			pstmt = conn.prepareStatement(query.toString());
+			
+			if ("b_title".equals(searchOption)) {
+				pstmt.setString(1, "%"+searchKeyword+"%");
+			} else if ("b_title_content".equals(searchOption)) {
+				pstmt.setString(1, "%"+searchKeyword+"%");
+				pstmt.setString(2, "%"+searchKeyword+"%");
+			} else if ("b_writer".equals(searchOption)) {
+				pstmt.setString(1, "%"+searchKeyword+"%");
+			}
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				count = rs.getInt("count");
+			}
+			
 		} catch(Exception e) {
 			e.printStackTrace();
 		} finally {

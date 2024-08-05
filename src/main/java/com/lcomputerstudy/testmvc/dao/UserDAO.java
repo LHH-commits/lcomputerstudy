@@ -42,7 +42,7 @@ public class UserDAO {
 					.append("SELECT	@ROWNUM := @ROWNUM -1 AS ROWNUM,\n")
 					.append("		ta.*\n")
 					.append("FROM	user ta\n")
-					.append("INNER JOIN	(SELECT @rownum := (SELECT COUNT(*)-?+1 FROM user ta)) tb ON 1=1\n")
+					.append("INNER JOIN	(SELECT @ROWNUM := (SELECT COUNT(*)-?+1 FROM user ta)) tb\n")
 					.append("LIMIT	?, ?\n")
 					.toString();
 			pstmt = conn.prepareStatement(query);
