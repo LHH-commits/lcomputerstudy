@@ -10,6 +10,8 @@ public class Pagination {
 	int lastPage;     // (userCount/화면에 표시할 갯수), pagination 마지막 번호
 	int prevPage;     // pagination의 이전 목록
 	int nextPage;     // pagination의 다음 목록
+	String searchOption; // 검색옵션을 위한 변수(제목, 제목+내용, 작성자)
+	String searchKeyword; // 검색어를 위한 변수(사용자가 직접 검색어를 입력함)
 	public static final int pageUnit=5;	//한번에 불러 올 pagination 수
 	public static final int perPage=3;	//한번에 불러 올 userCount 수
 	
@@ -81,5 +83,19 @@ public class Pagination {
 	}
 	public void setNextPage(int nextPage) {
 		this.nextPage = nextPage;
+	}
+	public String getSearchOption() {
+		return searchOption;
+	}
+	public void setSearchOption(String searchOption) {
+		this.searchOption = searchOption;
+	}
+
+	public String getSearchKeyword() {
+		return searchKeyword;
+	}
+
+	public void setSearchKeyword(String searchKeyword) {
+		this.searchKeyword = searchKeyword;
 	}
 }

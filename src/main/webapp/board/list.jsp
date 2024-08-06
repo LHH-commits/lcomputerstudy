@@ -44,14 +44,14 @@
 	}
 </style>
 <body>
-<h1>게시물 목록</h1>
+<h1><a href="board-list.do">게시물 목록</a></h1>
 	<form action="board-list.do" method="get">
 		<select name="searchOption">
 			<option value="b_title" ${searchOption == 'b_title' ? 'selected' : '' }>제목</option>
 			<option value="b_title_content" ${searchOption == 'b_title_content' ? 'selected' : '' }>제목+내용</option>
 			<option value="b_writer" ${searchOption == 'b_writer' ? 'selected' : '' }>작성자</option>
 		</select>
-		<input type="text" name="searchKeyword" value="${searchKeyword }">
+		<input type="text" name="searchKeyword" placeholder="검색어를 입력하세요" value="${searchKeyword }">
 		<input type="submit" value="검색">
 	</form>
 	<table>

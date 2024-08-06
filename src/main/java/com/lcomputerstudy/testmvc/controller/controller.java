@@ -48,7 +48,7 @@ public class controller extends HttpServlet {
 		int count = 0;
 		int page = 1;
 		String pw = null;
-		String idx = null;
+		String id = null;
 		HttpSession session = null;
 		command = checkSession(request, response, command);
 		
@@ -137,15 +137,15 @@ public class controller extends HttpServlet {
 				view = "user/login";
 				break;
 			case "/user-login-process.do":
-				idx = request.getParameter("login_id");
+				id = request.getParameter("login_id");
 				pw = request.getParameter("login_password");
 				
 				userService = UserService.getInstance();
-				user = userService.loginUser(idx,pw);
+				user = userService.loginUser(id,pw);
 				
 				if(user != null) {
 					session = request.getSession();
-					session.setAttribute("user", user);
+					session.setAttribute("user", user); // 사용자 정보를 세션에 저장
 					
 					view = "user/login-result";
 				} else {
@@ -163,30 +163,54 @@ public class controller extends HttpServlet {
 			
 			case "/board-list.do":
 				String reqPage1 = request.getParameter("page");
+				String searchOption = request.getParameter("searchOption");
+				String searchKeyword = request.getParameter("searchKeyword");
 				if(reqPage1 != null) {
 					page = Integer.parseInt(reqPage1);
 				} else {
 					page = 1; // 페이지 정보가 없을 경우 기본 페이지는 1
 				}
 				boardService = BoardService.getInstance();
-				count = boardService.getBoardCount();
 				Pagination b_pagination = new Pagination();
+				
+				if(searchOption != null && searchKeyword != null) {
+					b_pagination.setSearchOption(searchOption);
+					b_pagination.setSearchKeyword(searchKeyword);
+					count = boardService.getBoardCountBySearch(b_pagination);
+				} else {
+					count = boardService.getBoardCount();
+				}
+				
 				b_pagination.setPage(page);
 				b_pagination.setCount(count);
 				b_pagination.build();
-				ArrayList<Board> b_list = boardService.getBoards(b_pagination);
+				ArrayList<Board> b_list = null;
+				
+				if(searchOption != null && searchKeyword != null) {
+					b_list = boardService.getBoardsBySearch(b_pagination);
+				} else {
+					b_list = boardService.getBoards(b_pagination);
+				}
+				
 				view = "board/list";
 				request.setAttribute("b_list", b_list);
 				request.setAttribute("b_pagination", b_pagination);
+				request.setAttribute("searchOption", searchOption);
+				request.setAttribute("searchKeyword", searchKeyword);
 				break;
 			case "/board-insert.do":
 				view = "board/insert";
 				break;
 			case "/board-insert-process.do":
+				session = request.getSession();
+				// (User)로 캐스팅하는 이유는 session.getAttribute가 항상 오브젝트타입으로 반환하기때문에 User로 캐스팅해야
+				//	해당 객체에 접근할 수 있음
+				User loginuser = (User) session.getAttribute("user");
+				
 				board = new Board();
 				board.setB_title(request.getParameter("title"));
 				board.setB_content(request.getParameter("content"));
-				board.setU_idx(Integer.parseInt(request.getParameter("writer_idx")));
+				board.setU_idx(loginuser.getU_idx());
 				
 				boardService = BoardService.getInstance();
 				boardService.insertBoard(board);
@@ -242,8 +266,8 @@ public class controller extends HttpServlet {
 		
 		String[] authList = {
 				"/user-list.do"
-				,"/user-insert.do"
-				,"/user-insert-process.do"
+				//,"/user-insert.do"
+				//,"/user-insert-process.do"
 				,"/user-detail.do"
 				,"/user-edit.do"
 				,"/user-edit-process.do"

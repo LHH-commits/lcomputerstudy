@@ -67,37 +67,44 @@ public class BoardDAO {
 		return list;
 	}
 	
-	public ArrayList<Board> getBoardsBySearch(Pagination pagination, String searchOption, String searchKeyword) {
+	public ArrayList<Board> getBoardsBySearch(Pagination pagination) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		ArrayList<Board> list = null;
+		String gso = pagination.getSearchOption(); 
+		String gsk = pagination.getSearchKeyword();
 		
 		try {
 			conn = DBConnection.getConnection();
-			StringBuilder query = new StringBuilder("SELECT b.b_idx, b.b_title, b.b_date, u.u_name as b_writer, b.b_biews "
+			StringBuilder query = new StringBuilder("SELECT b.b_idx, b.b_title, b.b_date, u.u_name as b_writer, b.b_views "
 					+ "FROM board b "
 					+ "INNER JOIN user u ON b.u_idx = u.u_idx "
 					+ "WHERE 1=1");
-			if ("b_title".equals(searchOption)) {
+			if ("b_title".equals(gso)) {
 				query.append(" AND b.b_title LIKE ?");
-			} else if ("b_title_content".equals(searchOption)) {
+			} else if ("b_title_content".equals(gso)) {
 				query.append(" AND b.b_title LIKE ? OR b.b_content LIKE ?");
-			} else if ("b_writer".equals(searchOption)) {
+			} else if ("b_writer".equals(gso)) {
 				query.append(" AND u.u_name LIKE ?");
 			}
 			query.append(" LIMIT ?,?");
 			pstmt = conn.prepareStatement(query.toString());
 			
-			if ("b_title".equals(searchOption)) {
-				pstmt.setString(1, "%"+searchKeyword+"%");
-			} else if ("b_title_content".equals(searchOption)) {
-				pstmt.setString(1, "%"+searchKeyword+"%");
-				pstmt.setString(2, "%"+searchKeyword+"%");
-			} else if ("b_writer".equals(searchOption)) {
-				pstmt.setString(1, "%"+searchKeyword+"%");
+			if ("b_title".equals(gso)) {
+				pstmt.setString(1, "%"+gsk+"%");
+				pstmt.setInt(2, pagination.getPageNum());
+				pstmt.setInt(3, pagination.getPerPage());
+			} else if ("b_title_content".equals(gso)) {
+				pstmt.setString(1, "%"+gsk+"%");
+				pstmt.setString(2, "%"+gsk+"%");
+				pstmt.setInt(3, pagination.getPageNum());
+				pstmt.setInt(4, pagination.getPerPage());
+			} else if ("b_writer".equals(gso)) {
+				pstmt.setString(1, "%"+gsk+"%");
+				pstmt.setInt(2, pagination.getPageNum());
+				pstmt.setInt(3, pagination.getPerPage());
 			}
-			pstmt.setInt(3, getBoardCount());
 			
 			rs = pstmt.executeQuery();
 			list = new ArrayList<Board>();
@@ -155,36 +162,38 @@ public class BoardDAO {
 		return count;
 	}
 	
-	public int getBoardCountBySearch(String searchOption, String searchKeyword) {
+	public int getBoardCountBySearch(Pagination pagination) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		int count = 0;
+		String gso = pagination.getSearchOption(); 
+		String gsk = pagination.getSearchKeyword();
 		
 		try {
 			conn = DBConnection.getConnection();
 			StringBuilder query = new StringBuilder
-					("SELECT COUNT(*) "
+					("SELECT COUNT(*) count "
 					+ "FROM board b "
 					+ "INNER JOIN user u ON b.u_idx=u.u_idx "
 					+ "WHERE 1=1");
-			if ("b_title".equals(searchOption)) {
+			if ("b_title".equals(gso)) {
 				query.append(" AND b.b_title LIKE ?");
-			} else if ("b_title_content".equals(searchOption)) {
+			} else if ("b_title_content".equals(gso)) {
 				query.append(" AND b.b_title LIKE ? OR b.b_content LIKE ?");
-			} else if ("b_writer".equals(searchOption)) {
+			} else if ("b_writer".equals(gso)) {
 				query.append(" AND u.u_name LIKE ?");
 			}
 			
 			pstmt = conn.prepareStatement(query.toString());
 			
-			if ("b_title".equals(searchOption)) {
-				pstmt.setString(1, "%"+searchKeyword+"%");
-			} else if ("b_title_content".equals(searchOption)) {
-				pstmt.setString(1, "%"+searchKeyword+"%");
-				pstmt.setString(2, "%"+searchKeyword+"%");
-			} else if ("b_writer".equals(searchOption)) {
-				pstmt.setString(1, "%"+searchKeyword+"%");
+			if ("b_title".equals(gso)) {
+				pstmt.setString(1, "%"+gsk+"%");
+			} else if ("b_title_content".equals(gso)) {
+				pstmt.setString(1, "%"+gsk+"%");
+				pstmt.setString(2, "%"+gsk+"%");
+			} else if ("b_writer".equals(gso)) {
+				pstmt.setString(1, "%"+gsk+"%");
 			}
 			
 			rs = pstmt.executeQuery();

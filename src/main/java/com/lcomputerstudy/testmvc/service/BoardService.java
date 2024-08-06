@@ -25,12 +25,12 @@ public class BoardService {
 		return service;
 	}
 	
-	public ArrayList<Board> getBoardsBySearch(Pagination pagination, String searchOption, String searchKeyword) {
-		return dao.getBoardBySearch(pagination, searchOption, searchKeyword);
+	public ArrayList<Board> getBoardsBySearch(Pagination pagination) {
+		return dao.getBoardsBySearch(pagination);
 	}
 	
-	public int getBoardCountBySearch(String searchOption, String searchKeyword) {
-		return dao.getBoardCountBySearch(searchOption, searchKeyword);
+	public int getBoardCountBySearch(Pagination pagination) {
+		return dao.getBoardCountBySearch(pagination);
 	}
 	
 	public ArrayList<Board> getBoards(Pagination pagination) {

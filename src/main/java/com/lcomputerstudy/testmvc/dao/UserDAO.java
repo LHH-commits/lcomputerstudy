@@ -258,7 +258,7 @@ public class UserDAO {
 		return count;
 	}
 	
-	public User loginUser(String idx, String pw) {
+	public User loginUser(String id, String pw) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -268,7 +268,7 @@ public class UserDAO {
 			conn = DBConnection.getConnection();
 			String sql = "SELECT * FROM user WHERE u_id=? AND u_pw=?";
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, idx);
+			pstmt.setString(1, id);
 			pstmt.setString(2, pw);
 			rs = pstmt.executeQuery();
 			

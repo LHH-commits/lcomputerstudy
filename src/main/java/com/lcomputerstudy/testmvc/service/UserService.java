@@ -52,7 +52,7 @@ public class UserService {
 		return dao.getUsersCount();
 	}
 	
-	public User loginUser(String idx, String pw) {
-		return dao.loginUser(idx, pw);
+	public User loginUser(String id, String pw) {
+		return dao.loginUser(id, pw);
 	}
 }

@@ -13,5 +13,6 @@
 	<p>비밀번호 : <input type="password" name="login_password"></p>
 	<p><input type="submit" value="로그인"></p>
 </form>
+<a href="user-insert.do">회원 가입</a>
 </body>
 </html>

@@ -8,6 +8,6 @@
 </head>
 <body>
 <h1>저장 완료</h1>
-<a href="/lcomputerstudy/user-list.do">돌아가기</a>
+<a href="/lcomputerstudy/user-login.do">로그인하러 가기</a>
 </body>
 </html>

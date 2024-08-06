@@ -13,8 +13,8 @@
 		<input type="text" name="title" required><br>
 		<label for="content">내용</label>
 		<textarea name="content" required></textarea><br>
-		<label for="writer_idx">작성자idx</label>
-		<input type="number" name="writer_idx" required><br>
+		<!-- <label for="writer_idx">작성자idx</label> 로그인하여 사용자세션을 불러오면 필요없는 부분 
+		<input type="number" name="writer_idx" required><br> -->
 		<input type="submit" value="게시물 등록">
 	</form>
 	<br>
