@@ -80,7 +80,7 @@
 			<c:choose>
 				<c:when test="${b_pagination.prevPage ge 1 }">
 					<li>
-						<a href="board-list.do?page=${b_pagination.prevPage }">
+						<a href="board-list.do?page=${b_pagination.prevPage }&searchOption=${searchOption}&searchKeyword=${searchKeyword}">
 							◀
 						</a>
 					</li>
@@ -95,7 +95,7 @@
 					</c:when>
 					<c:when test="${b_pagination.page ne i }">
 						<li>
-							<a href="board-list.do?page=${i }">${i }</a>
+							<a href="board-list.do?page=${i }&searchOption=${searchOption}&searchKeyword=${searchKeyword}">${i }</a>
 						</li>
 					</c:when>
 				</c:choose>
@@ -103,7 +103,7 @@
 			<c:choose>
 				<c:when test="${b_pagination.nextPage le b_pagination.lastPage }">
 					<li style="">
-						<a href="board-list.do?page=${b_pagination.nextPage }">▶</a>
+						<a href="board-list.do?page=${b_pagination.nextPage }&searchOption=${searchOption}&searchKeyword=${searchKeyword}">▶</a>
 					</li>
 				</c:when>
 			</c:choose>

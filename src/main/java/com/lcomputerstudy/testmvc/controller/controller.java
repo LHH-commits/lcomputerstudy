@@ -173,7 +173,7 @@ public class controller extends HttpServlet {
 				boardService = BoardService.getInstance();
 				Pagination b_pagination = new Pagination();
 				
-				if(searchOption != null && searchKeyword != null) {
+				if(searchOption != null && !searchOption.isEmpty() && searchKeyword != null && !searchKeyword.isEmpty()) {
 					b_pagination.setSearchOption(searchOption);
 					b_pagination.setSearchKeyword(searchKeyword);
 					count = boardService.getBoardCountBySearch(b_pagination);
@@ -186,7 +186,7 @@ public class controller extends HttpServlet {
 				b_pagination.build();
 				ArrayList<Board> b_list = null;
 				
-				if(searchOption != null && searchKeyword != null) {
+				if(searchOption != null && !searchOption.isEmpty() && searchKeyword != null && !searchKeyword.isEmpty()) {
 					b_list = boardService.getBoardsBySearch(b_pagination);
 				} else {
 					b_list = boardService.getBoards(b_pagination);
@@ -205,7 +205,7 @@ public class controller extends HttpServlet {
 				session = request.getSession();
 				// (User)로 캐스팅하는 이유는 session.getAttribute가 항상 오브젝트타입으로 반환하기때문에 User로 캐스팅해야
 				//	해당 객체에 접근할 수 있음
-				User loginuser = (User) session.getAttribute("user");
+				User loginuser = (User) session.getAttribute("user"); // 유저의 정보를 세션으로부터 가져온다
 				
 				board = new Board();
 				board.setB_title(request.getParameter("title"));

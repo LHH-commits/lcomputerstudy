@@ -30,16 +30,19 @@ public class BoardDAO {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		ArrayList<Board> list = null;
+		int pageNum = pagination.getPageNum();
+		int perPage = pagination.getPerPage();
 		
 		try {
 			conn = DBConnection.getConnection();
 			String query = "SELECT b.b_idx, b.b_title, b.b_date, u.u_name as b_writer, b.b_views "
 					+ "FROM board b "
 					+ "INNER JOIN user u ON b.u_idx = u.u_idx "
+					+ "ORDER BY b.b_date DESC "
 					+ "LIMIT ?, ?";
 			pstmt = conn.prepareStatement(query);
-			pstmt.setInt(1, pagination.getPageNum());
-			pstmt.setInt(2, pagination.getPerPage());
+			pstmt.setInt(1, pageNum);
+			pstmt.setInt(2, perPage);
 			rs = pstmt.executeQuery();
 			list = new ArrayList<Board>();
 			
@@ -81,6 +84,7 @@ public class BoardDAO {
 					+ "FROM board b "
 					+ "INNER JOIN user u ON b.u_idx = u.u_idx "
 					+ "WHERE 1=1");
+			
 			if ("b_title".equals(gso)) {
 				query.append(" AND b.b_title LIKE ?");
 			} else if ("b_title_content".equals(gso)) {
@@ -88,6 +92,7 @@ public class BoardDAO {
 			} else if ("b_writer".equals(gso)) {
 				query.append(" AND u.u_name LIKE ?");
 			}
+			query.append(" ORDER BY b.b_date DESC");
 			query.append(" LIMIT ?,?");
 			pstmt = conn.prepareStatement(query.toString());
 			
